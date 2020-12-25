@@ -1,0 +1,27 @@
+/* Create two unequal columns that floats next to each other */
+/* Left column */
+.leftcol {
+  float: left;
+  width: 75%;
+}
+
+/* Right column */
+.rightcol {
+  float: left;
+  width: 25%;
+  padding-left: 20px;
+}
+
+/* Add a card effect for articles */
+.card {
+  background-color: white;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+/* Clear floats after the columns */
+.main:after {
+  content: "";
+  display: table;
+  clear: both;
+}

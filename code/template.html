@@ -1,0 +1,92 @@
+<html>
+  <head>
+    <title>{{.Title}}</title>
+    <link rel="stylesheet" type="text/css" href="/main.css">
+  </head>
+
+  <body>
+
+    <div class="header">
+      <h1>Dog House Cooking</h1>
+    </div>
+
+    <div class="topnav">
+      <a href="/">Home</a>
+      <a href="/articles">Articles</a>
+      <a href="/recipes">Recipes</a>
+      <a href="/about.html">About</a>
+    </div>
+
+    <div class="info">
+      <div class="info-text">
+        <div class="title">
+          <h1>{{.Title}}</h1>
+        </div>
+
+        <div class="prep">
+          <p><span class="info-label">Prep Time:</span> {{.PrepTime}}</p>
+        </div>
+
+        <div class="cook">
+          <p><span class="info-label">Cook Time:</span> {{.CookTime}}</p>
+        </div>
+
+        <div class="yield">
+          <p><span class="info-label">Yield:</span> {{.Yield}}</p>
+        </div>
+
+        <div class="description">
+          <div id="description-label">
+            <p><span class="info-label">Description:</span></p>
+          </div>
+          <div id="description-content">
+            <p>{{.Description}}</p>
+          </div>
+        </div> <!-- /Description -->
+
+      </div> <!-- /Info text -->
+
+      <div class="image">
+        <img src="/img/placeholder.jpg" />
+      </div>
+
+    </div> <!-- /Info block -->
+
+    <div class="recipe">
+      <div class="ingredients">
+        <h2>Ingredients</h2>
+
+        <ul>
+          {{range .Ingredients}}
+          <li>{{.}}</li>
+          {{end}}
+        </ul>
+      </div> <!-- /Ingredients -->
+
+
+      <div class="directions">
+        <h2>Directions</h2>
+
+        <ol>
+          {{range .Directions}}
+          <li>{{.}}</li>
+          {{end}}
+        </ol>
+      </div> <!-- /Directions -->
+
+    </div> <!-- Recipe -->
+
+    {{if .Notes}}
+    <div class="notes">
+      <h2>Notes</h2>
+
+      <ul>
+        {{range .Notes}}
+        <li>{{.}}</li>
+        {{end}}
+      </ul>
+    </div> <!-- Notes -->
+    {{end}}
+
+  </body>
+</html>
