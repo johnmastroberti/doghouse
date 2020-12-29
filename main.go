@@ -2,11 +2,13 @@ package main
 
 import (
 	"log"
+
+	"doghousecooking.com/sitegen/src/generate"
 )
 
 func main() {
 	// Generate recipes
-	check(GenerateAllRecipes("data/recipes", "www/recipes"))
+	check(generate.AllRecipes("data/recipes", "www/recipes"))
 }
 
 func check(err error) {

@@ -1,4 +1,4 @@
-package main
+package generate
 
 import (
 	"bufio"
@@ -6,17 +6,19 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"doghousecooking.com/sitegen/src/recipe"
 )
 
 // Reads a recipe from a file and writes out the corresponding html file using the given template
-func RecipeToHtml(recipePath, htmlPath string, htmlTemplate *template.Template) error {
+func recipeToHtml(recipePath, htmlPath string, htmlTemplate *template.Template) error {
 	// Open and read contents
 	file, err := os.Open(recipePath)
 	if err != nil {
 		return err
 	}
 	defer file.Close()
-	recipe := MarshalRecipe(bufio.NewReader(file))
+	recipe := recipe.MarshalRecipe(bufio.NewReader(file))
 
 	// Format and write the page to a file
 	outFile, err := os.Create(htmlPath)
@@ -30,7 +32,7 @@ func RecipeToHtml(recipePath, htmlPath string, htmlTemplate *template.Template) 
 }
 
 // Reads all *.recipe files in recipeDir (except template.recipe if it exists, and generates *.html for each of them in the output directory
-func GenerateAllRecipes(recipeDir, outDir string) error {
+func AllRecipes(recipeDir, outDir string) error {
 	// Make output directory if necessary
 	err := os.MkdirAll(outDir, 0755)
 	if err != nil {
@@ -58,6 +60,6 @@ func GenerateAllRecipes(recipeDir, outDir string) error {
 
 		htmlFileName := strings.Replace(filepath.Base(recipePath), "recipe", "html", 1)
 
-		return RecipeToHtml(recipePath, filepath.Join(outDir, htmlFileName), htmlTemplate)
+		return recipeToHtml(recipePath, filepath.Join(outDir, htmlFileName), htmlTemplate)
 	})
 }
