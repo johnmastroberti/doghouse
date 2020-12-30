@@ -18,8 +18,20 @@
       <a href="/about.html">About</a>
     </div>
 
-    
-    
+    <!-- Beginning of page body -->
+    {{range .}}
+    <div class="card">
+      <a href="recipes/{{call .PageName}}">
+        <h2>banana-bread</h2>
+      </a>
+      <a href="recipes/{{call .PageName}}">
+        <img src="/img/{{.Image}}" />
+      </a>
+      <p>{{.Description}}</p>
+    </div>
+
+
+    {{end}}
 
   </body>
 </html>

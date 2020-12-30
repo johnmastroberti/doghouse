@@ -13,6 +13,7 @@ func main() {
 
 	// Generate recipes
 	check(generate.AllRecipes(book, "www/recipes"))
+	check(generate.RecipeIndex(book, "www/recipes"))
 }
 
 func check(err error) {
