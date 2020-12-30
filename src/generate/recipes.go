@@ -37,7 +37,7 @@ func AllRecipes(book recipe.RecipeBook, outDir string) error {
 
 	// Generate the webpages
 	for _, r := range book {
-		err = recipeToHtml(r, filepath.Join(outDir, r.PageName()), htmlTemplate)
+		err = recipeToHtml(r, filepath.Join(outDir, r.PageName), htmlTemplate)
 		if err != nil {
 			return err
 		}

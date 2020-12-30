@@ -18,7 +18,11 @@ func MarshalRecipe(recipe *bufio.Reader) (Recipe, error) {
 		// Read a line
 		line, err := recipe.ReadString('\n')
 		if err != nil {
-			return out, err
+			break
+			// if err == io.EOF {
+			//   err = nil
+			// }
+			// return out, err
 		}
 
 		line = strings.TrimSpace(line)
@@ -75,6 +79,9 @@ func MarshalRecipe(recipe *bufio.Reader) (Recipe, error) {
 		}
 
 	}
+
+	// Finally, fill the PageName field
+	out.PageName = out.makePageName()
 
 	return out, nil
 }

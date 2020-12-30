@@ -16,13 +16,14 @@ type Recipe struct {
 	CookTime    string
 	Yield       string
 	Image       string
+	PageName    string
 	Ingredients []template.HTML // These are stored as HTML to allow inline
 	Directions  []template.HTML // html in the recipe files
 	Notes       []template.HTML
 }
 
 // Returns the name of the webpage for the given recipe
-func (r *Recipe) PageName() string {
+func (r *Recipe) makePageName() string {
 	// Use Title, lowercased with spaces set to dashes
 	name := strings.ToLower(r.Title)
 	name = strings.ReplaceAll(name, " ", "-")

@@ -21,10 +21,10 @@
     <!-- Beginning of page body -->
     {{range .}}
     <div class="card">
-      <a href="recipes/{{call .PageName}}">
-        <h2>banana-bread</h2>
+      <a href="{{.PageName}}">
+        <h2>{{.Title}}</h2>
       </a>
-      <a href="recipes/{{call .PageName}}">
+      <a href="{{.PageName}}">
         <img src="/img/{{.Image}}" />
       </a>
       <p>{{.Description}}</p>
