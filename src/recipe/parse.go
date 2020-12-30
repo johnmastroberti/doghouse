@@ -3,24 +3,12 @@ package recipe
 import (
 	"bufio"
 	"html/template"
+	"os"
 	"strings"
 )
 
-// Recipe represents all of the information about a single recipe which is encoded in a recipe file.
-type Recipe struct {
-	Title       string
-	Description string
-	PrepTime    string
-	CookTime    string
-	Yield       string
-	Image       string
-	Ingredients []template.HTML // These are stored as HTML to allow inline
-	Directions  []template.HTML // html in the recipe files
-	Notes       []template.HTML
-}
-
 // Reads a recipe file and returns
-func MarshalRecipe(recipe *bufio.Reader) Recipe {
+func MarshalRecipe(recipe *bufio.Reader) (Recipe, error) {
 	var out Recipe
 	out.Image = "placeholder.jpg"
 	inIngredients := false
@@ -30,7 +18,7 @@ func MarshalRecipe(recipe *bufio.Reader) Recipe {
 		// Read a line
 		line, err := recipe.ReadString('\n')
 		if err != nil {
-			return out
+			return out, err
 		}
 
 		line = strings.TrimSpace(line)
@@ -88,5 +76,16 @@ func MarshalRecipe(recipe *bufio.Reader) Recipe {
 
 	}
 
-	return out
+	return out, nil
+}
+
+// Reads a recipe file and returns the corresponding recipe
+func ParseFile(recipePath string) (Recipe, error) {
+	// Open and read contents
+	file, err := os.Open(recipePath)
+	if err != nil {
+		return Recipe{}, err
+	}
+	defer file.Close()
+	return MarshalRecipe(bufio.NewReader(file))
 }

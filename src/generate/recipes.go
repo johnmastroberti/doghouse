@@ -1,38 +1,28 @@
 package generate
 
 import (
-	"bufio"
 	"html/template"
 	"os"
 	"path/filepath"
-	"strings"
 
 	"doghousecooking.com/sitegen/src/recipe"
 )
 
 // Reads a recipe from a file and writes out the corresponding html file using the given template
-func recipeToHtml(recipePath, htmlPath string, htmlTemplate *template.Template) error {
-	// Open and read contents
-	file, err := os.Open(recipePath)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
-	recipe := recipe.MarshalRecipe(bufio.NewReader(file))
-
+func recipeToHtml(r recipe.Recipe, htmlPath string, htmlTemplate *template.Template) error {
 	// Format and write the page to a file
 	outFile, err := os.Create(htmlPath)
 	if err != nil {
 		return err
 	}
 	defer outFile.Close()
-	err = htmlTemplate.Execute(outFile, recipe)
+	err = htmlTemplate.Execute(outFile, r)
 
 	return err
 }
 
 // Reads all *.recipe files in recipeDir (except template.recipe if it exists, and generates *.html for each of them in the output directory
-func AllRecipes(recipeDir, outDir string) error {
+func AllRecipes(book recipe.RecipeBook, outDir string) error {
 	// Make output directory if necessary
 	err := os.MkdirAll(outDir, 0755)
 	if err != nil {
@@ -45,21 +35,12 @@ func AllRecipes(recipeDir, outDir string) error {
 		return err
 	}
 
-	// Walk recipeDir
-	return filepath.Walk(recipeDir, func(recipePath string, f os.FileInfo, err error) error {
-		// Make sure recipePath is a normal recipe file, and not template.recipe
-		if !f.Mode().IsRegular() {
-			return nil
+	// Generate the webpages
+	for _, r := range book {
+		err = recipeToHtml(r, filepath.Join(outDir, r.PageName()), htmlTemplate)
+		if err != nil {
+			return err
 		}
-		if filepath.Ext(recipePath) != ".recipe" {
-			return nil
-		}
-		if filepath.Base(recipePath) == "template.recipe" {
-			return nil
-		}
-
-		htmlFileName := strings.Replace(filepath.Base(recipePath), "recipe", "html", 1)
-
-		return recipeToHtml(recipePath, filepath.Join(outDir, htmlFileName), htmlTemplate)
-	})
+	}
+	return nil
 }
